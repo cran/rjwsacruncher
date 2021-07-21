@@ -5,11 +5,18 @@
 \alias{create_param_file}
 \title{Create paramater file for the 'JWSACruncher'}
 \usage{
-create_param_file(dir_file_param, bundle = 10000, csv_layout = "list",
-  csv_separator = ";", ndecs = 6, policy = "parameters",
-  output = NULL, matrix_item = getOption("default_matrix_item"),
+create_param_file(
+  dir_file_param,
+  bundle = 10000,
+  csv_layout = "list",
+  csv_separator = ";",
+  ndecs = 6,
+  policy = "parameters",
+  output = NULL,
+  matrix_item = getOption("default_matrix_item"),
   tsmatrix_series = getOption("default_tsmatrix_series"),
-  paths_path = NULL)
+  paths_path = NULL
+)
 }
 \arguments{
 \item{dir_file_param}{Path to the directory that will contains the parameter file "parameters.param".}
@@ -22,7 +29,7 @@ create_param_file(dir_file_param, bundle = 10000, csv_layout = "list",
 
 \item{ndecs}{Number of decimals used in the output. By default \code{ndec = 6}.}
 
-\item{policy}{refreshing policy of the processing. Par défaut \code{policy = "parameters"} (re-estimation of the coefficients of the reg-ARIMA model, see details).}
+\item{policy}{refreshing policy of the processing. By default \code{policy = "parameters"} (re-estimation of the coefficients of the reg-ARIMA model, see details).}
 
 \item{output}{Full path of the output folder. By default (\code{output = NULL}) a folder is create in the path to the workspace ([workspace]/Output).}
 

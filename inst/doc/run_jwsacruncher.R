@@ -1,14 +1,14 @@
-## ----setup, include=FALSE------------------------------------------------
+## ----setup, include=FALSE-----------------------------------------------------
 knitr::opts_chunk$set(echo = TRUE, size = "small")
 library(knitr)
 
-## ---- eval = FALSE-------------------------------------------------------
+## ---- eval = FALSE------------------------------------------------------------
 #  library(rjwsacruncher)
 #  # Directory where to save the JWSACruncher:
 #  directory <- tempdir()
 #  download_cruncher(directory)
 
-## ----echo=FALSE----------------------------------------------------------
+## ----echo=FALSE---------------------------------------------------------------
 refresh_policy <- structure(list(`Option on JDemetra+` = c("Fixed model", 
 "Estimate regression coefficients", 
 "Estimate regression coefficients + Arima parameters", 
@@ -33,7 +33,7 @@ refresh_policy[1:6, 1] <-  paste("Partial concurrent adjustment ->", refresh_pol
 kable(refresh_policy, caption = "Refresh policies",
       booktabs = TRUE)
 
-## ---- eval = FALSE-------------------------------------------------------
+## ---- eval = FALSE------------------------------------------------------------
 #  # To get the default parameters
 #  getOption("default_matrix_item")
 #  # To change the default parameters to, for example, only export
@@ -43,14 +43,14 @@ kable(refresh_policy, caption = "Refresh policies",
 #                                  "likelihood.bic",
 #                                  "likelihood.bicc"))
 
-## ---- eval = FALSE-------------------------------------------------------
+## ---- eval = FALSE------------------------------------------------------------
 #  # To get the default parameters
 #  getOption("default_tsmatrix_series")
 #  # To change the default parameters to, for example, only export
 #  # the seasonally adjusted series and its forecasts:
 #  options(default_tsmatrix_series = c("sa", "sa_f"))
 
-## ---- eval = FALSE-------------------------------------------------------
+## ---- eval = FALSE------------------------------------------------------------
 #  export_dir <- tempdir()
 #  # To create the file parameters.params in the directory export_dir with
 #  # the refresh policy "lastoutliers" and the others default parameters:
@@ -65,10 +65,10 @@ kable(refresh_policy, caption = "Refresh policies",
 #                                    "likelihood.bic", "likelihood.bicc"),
 #                    tsmatrix_series = c("sa", "sa_f"))
 
-## ---- eval = FALSE-------------------------------------------------------
+## ---- eval = FALSE------------------------------------------------------------
 #  options(cruncher_bin_directory = "D:/jdemetra-cli-2.2.2/bin/")
 
-## ---- eval = FALSE-------------------------------------------------------
+## ---- eval = FALSE------------------------------------------------------------
 #  # The following code updates the workspace "workspace", that is under the folder D:/,
 #  # with the refresh policy "lastoutliers". Others parameters are the default ones of create_param_file().
 #  # In particular, the exported parameters are those of the options
