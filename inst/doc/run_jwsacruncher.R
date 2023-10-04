@@ -1,12 +1,15 @@
 ## ----setup, include=FALSE-----------------------------------------------------
 knitr::opts_chunk$set(echo = TRUE, size = "small")
 library(knitr)
+library(rjwsacruncher)
 
 ## ---- eval = FALSE------------------------------------------------------------
 #  library(rjwsacruncher)
 #  # Directory where to save the JWSACruncher:
 #  directory <- tempdir()
 #  download_cruncher(directory)
+#  # for JDemetra+ 3.x.y versions :
+#  download_cruncher(directory, v3 = TRUE)
 
 ## ----echo=FALSE---------------------------------------------------------------
 refresh_policy <- structure(list(`Option on JDemetra+` = c("Fixed model", 
@@ -50,20 +53,24 @@ kable(refresh_policy, caption = "Refresh policies",
 #  # the seasonally adjusted series and its forecasts:
 #  options(default_tsmatrix_series = c("sa", "sa_f"))
 
-## ---- eval = FALSE------------------------------------------------------------
-#  export_dir <- tempdir()
-#  # To create the file parameters.params in the directory export_dir with
-#  # the refresh policy "lastoutliers" and the others default parameters:
-#  create_param_file(dir_file_param = "D:/",
-#                    policy = "lastoutliers")
-#  
-#  # If the options "default_matrix_item" and "default_tsmatrix_series" were
-#  # changed to only export the information criteria, the seasonally adjusted series and its forecasts, the previous code is equivalent to:
-#  create_param_file(dir_file_param = export_dir,
-#                    policy = "lastoutliers",
-#                    matrix_item = c("likelihood.aic", "likelihood.aicc",
-#                                    "likelihood.bic", "likelihood.bicc"),
-#                    tsmatrix_series = c("sa", "sa_f"))
+## ---- eval = TRUE-------------------------------------------------------------
+export_dir <- tempdir()
+# To create the file parameters.params in the directory export_dir with
+# the refresh policy "lastoutliers" and the others default parameters:
+create_param_file(dir_file_param = export_dir,
+                  policy = "lastoutliers")
+
+# If the options "default_matrix_item" and "default_tsmatrix_series" were
+# changed to only export the information criteria, the seasonally adjusted series and its forecasts, the previous code is equivalent to:
+create_param_file(dir_file_param = export_dir,
+                  policy = "lastoutliers",
+                  matrix_item = c("likelihood.aic", "likelihood.aicc",
+                                  "likelihood.bic", "likelihood.bicc"),
+                  tsmatrix_series = c("sa", "sa_f"))
+
+## ---- eval = TRUE-------------------------------------------------------------
+param_f <- read_param_file(file.path(export_dir, "parameters.param"))
+str(param_f)
 
 ## ---- eval = FALSE------------------------------------------------------------
 #  options(cruncher_bin_directory = "D:/jdemetra-cli-2.2.2/bin/")

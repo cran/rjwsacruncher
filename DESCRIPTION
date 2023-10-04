@@ -1,6 +1,6 @@
 Package: rjwsacruncher
 Title: Interface to the 'JWSACruncher' of 'JDemetra+'
-Version: 0.1.3
+Version: 0.2.0
 Authors@R: c(person("Alain", "Quartier-la-Tente", role = c("aut", "cre"),
                  email = "alain.quartier@yahoo.fr",
                  comment = c(ORCID = "0000-0001-7890-3857")),
@@ -17,12 +17,12 @@ Suggests: knitr, rmarkdown
 License: GPL-3
 VignetteBuilder: knitr
 Encoding: UTF-8
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 NeedsCompilation: no
-Packaged: 2022-11-11 19:36:33 UTC; alainquartierlatente
+Packaged: 2023-10-04 15:03:33 UTC; alainquartierlatente
 Author: Alain Quartier-la-Tente [aut, cre]
     (<https://orcid.org/0000-0001-7890-3857>),
   Institut national de la statistique et des études économiques [cph]
 Maintainer: Alain Quartier-la-Tente <alain.quartier@yahoo.fr>
 Repository: CRAN
-Date/Publication: 2022-11-11 21:50:02 UTC
+Date/Publication: 2023-10-04 19:00:02 UTC
