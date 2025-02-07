@@ -4,13 +4,13 @@
 # rjwsacruncher
 
 [![R-CMD-check](https://github.com/AQLT/rjwsacruncher/workflows/R-CMD-check/badge.svg)](https://github.com/AQLT/rjwsacruncher/actions)
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/rjwsacruncher)](https://cran.r-project.org/package=rjwsacruncher)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/rjwsacruncher)](https://cran.r-project.org/package=rjwsacruncher)
 [![CRAN last
-release](http://www.r-pkg.org/badges/last-release/rjwsacruncher)](https://cran.r-project.org/package=rjwsacruncher)
+release](https://www.r-pkg.org/badges/last-release/rjwsacruncher)](https://cran.r-project.org/package=rjwsacruncher)
 [![CRAN monthly
-downloads](http://cranlogs.r-pkg.org/badges/rjwsacruncher?color=lightgrey)](https://cran.r-project.org/package=rjwsacruncher)
+downloads](https://cranlogs.r-pkg.org/badges/rjwsacruncher?color=lightgrey)](https://cran.r-project.org/package=rjwsacruncher)
 [![CRAN
-downloads](http://cranlogs.r-pkg.org/badges/grand-total/rjwsacruncher?color=lightgrey)](https://cran.r-project.org/package=rjwsacruncher)
+downloads](https://cranlogs.r-pkg.org/badges/grand-total/rjwsacruncher?color=lightgrey)](https://cran.r-project.org/package=rjwsacruncher)
 
 The goal of rjwsacruncher is to launch quickly and easily the
 [JWSACruncher](https://github.com/jdemetra/jwsacruncher) of
@@ -26,14 +26,17 @@ JWSACruncher can be found on
 # Install release version from CRAN
 install.packages("rjwsacruncher")
 
-# Install development version from GitHub
+# Install development version:
+install.packages("rjwsacruncher", repos = c("https://aqlt.r-universe.dev", "https://cloud.r-project.org"))
+# Or :
 # install.packages("devtools")
-devtools::install_github("AQLT/rjwsacruncher")
+# devtools::install_github("AQLT/rjwsacruncher")
 ```
 
 The JWSACruncher is not included in the package. It can be downloaded
-from GitHub (<https://github.com/jdemetra/jwsacruncher/releases>) or
-with the function `download_cruncher()`:
+from GitHub (<https://github.com/jdemetra/jwsacruncher/releases> or
+<https://github.com/jdemetra/jdplus-main/releases>) or with the function
+`download_cruncher()`:
 
 ``` r
 library(rjwsacruncher)
@@ -59,8 +62,8 @@ under `D:/jdemetra-cli-2.2.3/`:
 options(cruncher_bin_directory = "D:/jdemetra-cli-2.2.3/bin/")
 ```
 
-The export items can be changed with the function
-“default\_matrix\_item” and “default\_tsmatrix\_series”:
+The export items can be changed with the function “default_matrix_item”
+and “default_tsmatrix_series”:
 
 ``` r
 # To get the default values:

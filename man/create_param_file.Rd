@@ -19,11 +19,12 @@ create_param_file(
   matrix_item = getOption("default_matrix_item"),
   tsmatrix_series = getOption("default_tsmatrix_series"),
   paths_path = NULL,
-  v3 = getOption("is_cruncher_v3")
+  v3 = getOption("is_cruncher_v3"),
+  file_param = file.path(dir_file_param, "parameters.param")
 )
 }
 \arguments{
-\item{dir_file_param}{Path to the directory that will contains the parameter file \code{"parameters.param"}.}
+\item{dir_file_param}{Path to the directory that will contains the parameter file \code{"parameters.param"} (if \code{file_param} not supplied).}
 
 \item{bundle}{Maximum size for a group of series (in output). By default \code{bundle = 10000}.}
 
@@ -52,6 +53,9 @@ Only used when \code{v3 = TRUE}.}
 
 \item{v3}{Boolean indicating if the parameter file should be compatible with a version 3.0.0 and higher of 'JWSACRuncher' (\code{v3 = TRUE}) or a lower version (\code{v3 = FALSE}). By default
 the value of the option \code{"is_cruncher_v3"} is used (equals to \code{FALSE} by default).}
+
+\item{file_param}{Path to the parameters file.
+By default the file is named \code{parameters.param} and it is created at the \code{fir_file_param} directory.}
 }
 \value{
 Path to the parameter file.
@@ -62,13 +66,15 @@ To run the 'JWSACruncher' needs a parameter file and \code{create_param_file} al
 \details{
 When the 'JWSACruncher' is launched, the data is refreshed with a specific policy that is defined by the parameter \code{policy}. The available options are:
 \itemize{
-\item \code{policy = "current"}: all the estimations are fixed;
-\item \code{policy = "fixedparameters"} or \code{policy = "fixed"}: re-estimation of the coefficients of the regression variables (but not the ARIMA coefficients);
-\item \code{policy = "parameters"} (the default): \code{policy = "fixedparameters"} + re-estimation of ARIMA coefficients;
-\item \code{policy = "lastoutliers"}: \code{policy = "parameters"} + re-identification of last outliers (on the last year);
-\item \code{policy = "outliers"}: \code{policy = "lastoutliers"} + re-identification of all outliers;
-\item \code{policy = "stochastic"}: \code{policy = "outliers"} + re-identification of ARIMA orders;
-\item \code{policy = "complete"} or \code{policy = "concurrent"}: the model is completely re-identified and re-estimated.
+\item \code{policy = "current"}: all the estimations are fixed and AO added for new data (since v.2.2.3), short name \code{policy = "n"};
+\item \code{policy = "fixed"}: all the estimations are fixed (since v.2.2.3), short name \code{policy = "f"};
+\item \code{policy = "fixedparameters"}: re-estimation of the coefficients of the regression variables (but not the ARIMA coefficients), short name \code{policy = "fp"};
+\item \code{policy = "fixedarparameters"}: re-estimation of the coefficients of the regression variables and of the MA coefficients of the ARIMA model (but not the AR coefficients), short name \code{policy = "farp"} (since v.3.3.1);
+\item \code{policy = "parameters"} (the default): \code{policy = "fixedparameters"} + re-estimation of ARIMA coefficients, short name \code{policy = "p"};
+\item \code{policy = "lastoutliers"}: \code{policy = "parameters"} + re-identification of last outliers (on the last year), short name \code{policy = "l"};
+\item \code{policy = "outliers"}: \code{policy = "lastoutliers"} + re-identification of all outliers, short name \code{policy = "o"};
+\item \code{policy = "stochastic"}: \code{policy = "outliers"} + re-identification of ARIMA orders, short name \code{policy = "s"};
+\item \code{policy = "complete"} or \code{policy = "concurrent"}: the model is completely re-identified and re-estimated, short name \code{policy = "c"}.
 }
 }
 \examples{

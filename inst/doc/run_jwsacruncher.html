@@ -10,7 +10,7 @@
 
 
 
-<meta name="date" content="2023-10-04" />
+<meta name="date" content="2025-02-07" />
 
 <title>Run the ‘JWSACruncher’ with rjwsacruncher</title>
 
@@ -1480,7 +1480,7 @@ border-radius: 0px;
 
 <h1 class="title toc-ignore">Run the ‘JWSACruncher’ with
 rjwsacruncher</h1>
-<h4 class="date">2023-10-04</h4>
+<h4 class="date">2025-02-07</h4>
 
 </div>
 
@@ -1489,7 +1489,7 @@ rjwsacruncher</h1>
 <h1>Launch the ’JWSACruncher”</h1>
 <p>To use <code>rjwsacruncher</code> you need to download the
 JWACruncher. It is available on <a href="https://github.com/jdemetra/jdemetra-app/releases" class="uri">https://github.com/jdemetra/jdemetra-app/releases</a> (for
-JDemetra+ 2.x.y versions) or <a href="https://github.com/jdemetra/jdemetra-app/releases" class="uri">https://github.com/jdemetra/jdemetra-app/releases</a> (for
+JDemetra+ 2.x.y versions) or <a href="https://github.com/jdemetra/jdplus-main/releases" class="uri">https://github.com/jdemetra/jdplus-main/releases</a> (for
 JDemetra+ 3.x.y versions). It can also be downloaded with the function
 <code>download_cruncher()</code>:</p>
 <pre class="r"><code>library(rjwsacruncher)
@@ -1534,38 +1534,63 @@ most important parameters of <code>create_param_file()</code> are:</p>
 <table>
 <caption>Refresh policies</caption>
 <colgroup>
-<col width="20%" />
+<col width="22%" />
 <col width="6%" />
-<col width="72%" />
+<col width="2%" />
+<col width="68%" />
 </colgroup>
 <thead>
 <tr class="header">
 <th align="left">Option on JDemetra+</th>
 <th align="left">Option for the JWSACruncher</th>
+<th align="left">Short name</th>
 <th align="left">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">Partial concurrent adjustment -&gt; Fixed model</td>
+<td align="left">Current[AO]: fixed model + AO for new data</td>
 <td align="left">current</td>
+<td align="left">n</td>
 <td align="left">The ARIMA model, outliers and other regression
 parameters are not re-identified and the values of all parameters are
-fixed. The transformation type remains unchanged.</td>
+fixed. The transformation type remains unchanged. An additive outlier
+(AO) is added for new data. (since v.2.2.3)</td>
 </tr>
 <tr class="even">
+<td align="left">Partial concurrent adjustment -&gt; Fixed model</td>
+<td align="left">fixed</td>
+<td align="left">f</td>
+<td align="left">The ARIMA model, outliers and other regression
+parameters are not re-identified and the values of all parameters are
+fixed. The transformation type remains unchanged. (since v.2.2.3)</td>
+</tr>
+<tr class="odd">
 <td align="left">Partial concurrent adjustment -&gt; Estimate regression
 coefficients</td>
-<td align="left">fixedparameters (or fixed)</td>
+<td align="left">fixedparameters</td>
+<td align="left">fp</td>
 <td align="left">The ARIMA model, outliers and other regression
 parameters are not re-identified. The coefficients of the ARIMA model
 are fixed, other coefficients are re-estimated. The transformation type
 remains unchanged.</td>
 </tr>
+<tr class="even">
+<td align="left">Partial concurrent adjustment -&gt; Estimate regression
+coefficients + MA parameters of the ARIMA model</td>
+<td align="left">fixedarparameters</td>
+<td align="left">farp</td>
+<td align="left">The ARIMA model, outliers and other regression
+parameters are not re-identified. The AR coefficients of the ARIMA model
+are fixed, other coefficients are re-estimated (MA coefficients +
+regressors). The transformation type remains unchanged. (since
+v.3.3.1)</td>
+</tr>
 <tr class="odd">
 <td align="left">Partial concurrent adjustment -&gt; Estimate regression
 coefficients + Arima parameters</td>
 <td align="left">parameters (by default)</td>
+<td align="left">p</td>
 <td align="left">The ARIMA model, outliers and other regression
 parameters are not re-identified. All parameters of the RegARIMA model
 are re-estimated. The transformation type remains unchanged.</td>
@@ -1574,6 +1599,7 @@ are re-estimated. The transformation type remains unchanged.</td>
 <td align="left">Partial concurrent adjustment -&gt; Estimate regression
 coefficients + Last outliers</td>
 <td align="left">lastoutliers</td>
+<td align="left">l</td>
 <td align="left">The ARIMA model, outliers (except from the outliers in
 the last year of the sample) and other regression parameters are not
 re-identified. All parameters of the RegARIMA model are re-estimated.
@@ -1584,6 +1610,7 @@ transformation type remains unchanged.</td>
 <td align="left">Partial concurrent adjustment -&gt; Estimate regression
 coefficients + all outliers</td>
 <td align="left">outliers</td>
+<td align="left">o</td>
 <td align="left">The ARIMA model and regression parameters, except from
 outliers) are not re-identified. All parameters of the RegARIMA model
 are re-estimated. All outliers are re-identified. The transformation
@@ -1593,6 +1620,7 @@ type remains unchanged.</td>
 <td align="left">Partial concurrent adjustment -&gt; Estimate regression
 coefficients + Arima model</td>
 <td align="left">stochastic</td>
+<td align="left">s</td>
 <td align="left">Re-identification of the ARIMA model, outliers and
 regression variables, except from the calendar variables. The
 transformation type remains unchanged.</td>
@@ -1600,6 +1628,7 @@ transformation type remains unchanged.</td>
 <tr class="odd">
 <td align="left">Concurrent</td>
 <td align="left">complete (or concurrent)</td>
+<td align="left">c</td>
 <td align="left">Re-identification of the whole RegARIMA model.</td>
 </tr>
 </tbody>

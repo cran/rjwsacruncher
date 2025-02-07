@@ -2,7 +2,9 @@
 #'
 #' To run the 'JWSACruncher' needs a parameter file and \code{create_param_file} allows to create it.
 #'
-#' @param dir_file_param Path to the directory that will contains the parameter file \code{"parameters.param"}.
+#' @param dir_file_param Path to the directory that will contains the parameter file \code{"parameters.param"} (if `file_param` not supplied).
+#' @param file_param Path to the parameters file. 
+#' By default the file is named `parameters.param` and it is created at the `fir_file_param` directory.
 #' @param bundle Maximum size for a group of series (in output). By default \code{bundle = 10000}.
 #' @param csv_layout Layout of the CSV files (series only). By default \code{csv_layout = "list"}. Other options: \code{csv_layout = "vtable"} (vertical table) or \code{csv_layout = "htable"} (horizontal table).
 #' @param csv_separator The field separator string used in the CSV file. By default \code{csv_separator = ";"}.
@@ -20,13 +22,15 @@
 #' the value of the option \code{"is_cruncher_v3"} is used (equals to \code{FALSE} by default).
 #' @details When the 'JWSACruncher' is launched, the data is refreshed with a specific policy that is defined by the parameter \code{policy}. The available options are:
 #' \itemize{
-#' \item \code{policy = "current"}: all the estimations are fixed;
-#' \item \code{policy = "fixedparameters"} or \code{policy = "fixed"}: re-estimation of the coefficients of the regression variables (but not the ARIMA coefficients);
-#' \item \code{policy = "parameters"} (the default): \code{policy = "fixedparameters"} + re-estimation of ARIMA coefficients;
-#' \item \code{policy = "lastoutliers"}: \code{policy = "parameters"} + re-identification of last outliers (on the last year);
-#' \item \code{policy = "outliers"}: \code{policy = "lastoutliers"} + re-identification of all outliers;
-#' \item \code{policy = "stochastic"}: \code{policy = "outliers"} + re-identification of ARIMA orders;
-#' \item \code{policy = "complete"} or \code{policy = "concurrent"}: the model is completely re-identified and re-estimated.
+#' \item \code{policy = "current"}: all the estimations are fixed and AO added for new data (since v.2.2.3), short name `policy = "n"`;
+#' \item \code{policy = "fixed"}: all the estimations are fixed (since v.2.2.3), short name `policy = "f"`;
+#' \item \code{policy = "fixedparameters"}: re-estimation of the coefficients of the regression variables (but not the ARIMA coefficients), short name `policy = "fp"`;
+#' \item \code{policy = "fixedarparameters"}: re-estimation of the coefficients of the regression variables and of the MA coefficients of the ARIMA model (but not the AR coefficients), short name `policy = "farp"` (since v.3.3.1);
+#' \item \code{policy = "parameters"} (the default): \code{policy = "fixedparameters"} + re-estimation of ARIMA coefficients, short name `policy = "p"`;
+#' \item \code{policy = "lastoutliers"}: \code{policy = "parameters"} + re-identification of last outliers (on the last year), short name `policy = "l"`;
+#' \item \code{policy = "outliers"}: \code{policy = "lastoutliers"} + re-identification of all outliers, short name `policy = "o"`;
+#' \item \code{policy = "stochastic"}: \code{policy = "outliers"} + re-identification of ARIMA orders, short name `policy = "s"`;
+#' \item \code{policy = "complete"} or \code{policy = "concurrent"}: the model is completely re-identified and re-estimated, short name `policy = "c"`.
 #' }
 #' 
 #' @return Path to the parameter file.
@@ -51,8 +55,10 @@ create_param_file <- function(
     matrix_item = getOption("default_matrix_item"),
     tsmatrix_series = getOption("default_tsmatrix_series"),
     paths_path = NULL,
-    v3 = getOption("is_cruncher_v3")){
-  if (missing(dir_file_param))
+    v3 = getOption("is_cruncher_v3"),
+    file_param = file.path(dir_file_param, "parameters.param")
+    ){
+  if (missing(dir_file_param) & missing(file_param))
     stop("The parameter dir_file_param is missing")
   
   first_line <- "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>"
@@ -95,12 +101,12 @@ create_param_file <- function(
                     "    </paths>")
   }
   
-  file_param <- c(first_line, param_line, policy_line, refresh_line, output_line,
+  export_file <- c(first_line, param_line, policy_line, refresh_line, output_line,
                   matrix_lines, tsmatrix_lines, path_lines,
                   "</wsaConfig>"
   )
-  writeLines(file_param, con = paste0(dir_file_param,"/parameters.param"))
-  return(invisible(paste0(dir_file_param,"/parameters.param")))
+  writeLines(export_file, con = file_param)
+  return(invisible(file_param))
 }
 
 #' Read parameter file of the 'JWSACruncher'
@@ -208,12 +214,19 @@ read_param_file <- function(file){
 #' list2param_file(dir, list_param)
 #' }
 #' @export
-list2param_file <- function(dir_file_param, x){
+list2param_file <- function(dir_file_param, x,
+                            file_param = file.path(dir_file_param, "parameters.param")){
   config <- x$config
   v3 <- !is.null(config$format)
   config$format <- x$config <- NULL
-  params <- c(list(dir_file_param = dir_file_param, v3 = v3),
-              config, x)
+  if (!missing(file_param)) {
+    params <- c(list(file_param = file_param, v3 = v3),
+                config, x)
+  } else {
+    params <- c(list(dir_file_param = dir_file_param, v3 = v3),
+                config, x)
+  }
+  
   do.call(create_param_file, params)
 }
 
@@ -221,9 +234,11 @@ list2param_file <- function(dir_file_param, x){
 #' 
 #' @param v3 Boolean indicating if the parameters are the from a version 3.0.0 and higher of 'JWSACRuncher' (\code{v3 = TRUE}) or a lower version (\code{v3 = FALSE}). By default 
 #' the value of the option \code{"is_cruncher_v3"} is used (equals to \code{FALSE} by default).
+#' @param cruncher_bin_directory Path to the directory that contains the 'JWSACruncher' binary.
+#' If defined, the parameter `v3` is ignored and the 'JWSACruncher' is run without  parameter to generate the default parameters file.
 #' @seealso [create_param_file()], [read_param_file()], [list2param_file()], [cruncher_and_param()].
 #' @export
-default_param_file <- function(v3 = getOption("is_cruncher_v3")){
+default_param_file <- function(v3 = getOption("is_cruncher_v3"), cruncher_bin_directory = NULL){
   v3_param <- 
     list(
       config = list(bundle = "10000", csv_layout = "list", csv_separator = ";", 
@@ -477,9 +492,30 @@ default_param_file <- function(v3 = getOption("is_cruncher_v3")){
                           "decomposition.i_cmp_ef", "decomposition.t_cmp_ef", "decomposition.s_cmp_ef", 
                           "decomposition.sa_cmp_ef", "decomposition.si_cmp"), 
       paths_path = NULL)
-  if (v3) {
-    v3_param
-  } else {
-    v2_param
+  if(! is.null(cruncher_bin_directory)) {
+    if (!file.exists(file.path(cruncher_bin_directory,"jwsacruncher")))
+      stop (sprintf("JWSACruncher not found in %s.\n Check the installation", paste0(cruncher_bin_directory,"/jwsacruncher"))) 
+    wd <- getwd()
+    setwd(cruncher_bin_directory)
+    on.exit(setwd(wd))
+    os <- Sys.info()[['sysname']]
+    if (os == "Windows") {
+      log <- system(
+        "jwsacruncher", intern = TRUE)
+    } else {
+      # Mac OS and linux
+      log <- system(
+        "./jwsacruncher", 
+        intern = TRUE)
+    }
+    res <- rjwsacruncher::read_param_file(file.path(cruncher_bin_directory, "wsacruncher.params"))
+    file.remove(file.path(cruncher_bin_directory, "wsacruncher.params"))
   }
+  
+  if (v3) {
+    res <- v3_param
+  } else {
+    res <- v2_param
+  }
+  return(res)
 }
